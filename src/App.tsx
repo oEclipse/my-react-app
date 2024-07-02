@@ -22,12 +22,33 @@ function Person(
 }
 
 interface FruitListProps {
-    items:Array<string>;
+    // items: Array<string>;
+    // items: string[];
+    // items?: string[];
+    // items: any;
+    // items: undefined;
+    items: unknown;
 }
-function FruitList(props:FruitListProps) {
+
+function isStringArr(value: unknown): value is string[] {
+    return typeof value === 'string';
+}
+
+function FruitList(props: FruitListProps) {
+    // const { items } = props as { items: string[] };
+    // const items = props.items as string[];
     const items = props.items;
+    if(!isStringArr(items)) {
+        return (
+            <ul>
+                <p>items 데이터 타입이 잘못 들어왔습니다.</p>
+            </ul>
+        )
+    }
     return (
         <ul>
+            {/* ? 를 사용한 조건부 참조형 타입 컨트롤 수행 시 */}
+            {/* 해당 타입을 사용할 때에도 조건부 참조하면 좋다 */}
             {items.map((item, index) => (
                 <li key={index}>{item}</li>
             ))}
@@ -39,13 +60,13 @@ interface WelcomeProps {
     children: any;
 }
 
-function Welcome(props:WelcomeProps) {
+function Welcome(props: WelcomeProps) {
     return <div>{props.children}</div>;
 }
 
-function Card(props:any) {
+function Card(props: any) {
     return (
-        <div style={{ border: '1px solid gray', margin: '10px', padding: '10px' }}>
+        <div style={{border: '1px solid gray', margin: '10px', padding: '10px' }}>
             {props.children}
         </div>
     );
@@ -62,8 +83,8 @@ function ToggleText(props:any) {
 
 
 function App() {
-  return (
-    <div className="App">
+  // return (
+    // <div className="App">
         {/*<MyComponent />*/}
         {/*<ButtonStyled>일반 버튼</ButtonStyled>*/}
         {/*<ButtonStyled primary={true}>Primary 버튼</ButtonStyled>*/}
@@ -84,9 +105,10 @@ function App() {
         {/*<MyButton handlerType={"external props receiver"}/>*/}
         {/*<MyStateComponent />*/}
         {/*<ClickCounter/>*/}
-        <ReloadControlEx/>
-    </div>
-  );
+        // <ReloadControlEx/>
+    // </div>
+  // );
+    return <FruitList items={['Apple', 'Banana', 'Cherry']} />;
 }
 
 export default App;
